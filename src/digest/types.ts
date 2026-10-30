@@ -17,6 +17,7 @@ export type DigestRow = {
   owner: string | null; // null renders as '—'
   runs: number;
   retries: number;
+  fails: number; // ok lines = runs - retries - fails
   lastStatus: RunStatus;
   lastError: string | null; // error of the last line, null when it has none
   first: string;
