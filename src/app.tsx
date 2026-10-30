@@ -4,6 +4,7 @@ import { isNight } from './digest/night.js';
 import { readNight } from './digest/read.js';
 import { lane } from './lane.js';
 import { readStatus } from './status.js';
+import { DigestPage, NoDigest } from './views/digest.js';
 import { Layout } from './views/layout.js';
 import { StatusBoard } from './views/status.js';
 
@@ -19,6 +20,24 @@ export function createApp(config: RigConfig = loadConfig()) {
       </Layout>,
     ),
   );
+
+  app.get('/digest/:night', (c) => {
+    const id = c.req.param('night');
+    const night = isNight(id) ? readNight(config.runsDir, id) : null;
+    if (!night) {
+      return c.html(
+        <Layout title={`digest · ${id}`} lane={lane()}>
+          <NoDigest night={id} />
+        </Layout>,
+        404,
+      );
+    }
+    return c.html(
+      <Layout title={`digest · ${id}`} lane={lane()}>
+        <DigestPage night={night} />
+      </Layout>,
+    );
+  });
 
   app.get('/api/digest/:night', (c) => {
     const night = c.req.param('night');
