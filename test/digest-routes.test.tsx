@@ -50,7 +50,7 @@ describe('GET /digest/:night', () => {
     expect(res.status).toBe(200);
     expect(html).toContain('zeta/sync');
     expect(html).toContain('alpha/backup');
-    expect(html).toContain("1 line didn't parse");
+    expect(html).toMatch(/1 line didn(?:'|&#39;)t parse/); // hono escapes ' as &#39;
   });
 });
 
